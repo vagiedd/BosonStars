@@ -21,7 +21,7 @@ Implements the relaxation algorithm given in "Numerical Recipies in C: The Art o
                  start=False,display=False,**kwargs):
 
 where 
--**xmin** = initial x value
+- **xmin** = initial x value
 -**xmax** = final x value 
 -**M** = length of x array
 -**N** = number of differential equations
