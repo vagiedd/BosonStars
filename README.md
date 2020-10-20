@@ -100,7 +100,7 @@ The function scale just specifies the relative scale of each variable in the dif
 For examples see test1.py and test2.py or the Numerical Recipies book for further explanation of the relaxation method. 
 
 ## Boson Star 
-Implements the extension of the relaxation_method to solve the Einstein-Klein-Gordon equations of motions for a system of 2 scalars. It contains the functions necessary for the relaxation method. 
+Implements the extension of the relaxation_method to solve the Einstein-Klein-Gordon equations of motions for a system of 2 scalars in bosonstar.py. It contains the functions necessary for the relaxation method. 
 
     class bosonstar(relaxation_method):
         def init(self,lam1=1,lam2=1,lam12=1,m1=1e-10,m2=1e-10,fr=1e17):
@@ -113,4 +113,73 @@ where
 - **m2** = mass of second scalar
 - **fr** = decay scale of scalars. 
 
-If fr is set to None, the couplings are the rescaled quantities.  
+If fr is set to None, the couplings are the rescaled quantities.  Although the bosonstar class can be called directly, the file contains helper functions to return the solutions to the equation of motion as well as the class self to have access to the bosonstar object created. The functions are 
+
+    def get_profiles(phi10,phi20,
+                     lam1=1,lam2=1,lam12=1,
+                     m1=1e-10,m2=1e 10,fr=1e17,
+                     rstart=10.0,dx=1.0,
+                     display=False,iteration=100):
+        ...             
+        return x,y,res
+
+where 
+- **phi10** = initial central density of the first scalar
+- **phi20** = intial central density of the second scalar
+- **rstart** = initial xmax value to pass to the relaxation method. this will be updated
+- **dx** = step size to update xmax
+- **display** = display results of relaxation method
+- **iteration** = number of allowed iterations
+
+returns 
+- **x** = grid
+- **y** = solutions of Einstein-Klein-Gordon equations of motion
+- **res** = bosonstar object
+
+Can return the total mass, compactness, central radius, and central density of the boson star. 
+
+Just compactness and total mass: 
+
+    def get_compactness(x,y,res):
+        Cbs,Mbs,rc,rho = res.findMbs(x,y)
+        return Cbs,Mbs
+        
+inputs are x,y and res returned from get_profiles
+
+returns 
+- **Cbs** = compactness in SI units
+- **Mbs** = total mass of boson star in solar masses
+
+Just central density and central radius:
+
+    def get_density(x,y,res):
+        Cbs,Mbs,rc,rho = res.findMbs(x,y)
+        return rc,rho
+inputs are x,y and res returned from get_profiles. 
+returns
+- **rc** = dimensionless central radius
+- **rho** = dimensionless central density
+ 
+Similarly if you want Cbs, Mbs, rc, and rho just call res.findMbs(x,y) from the returned object from get_profiles. 
+
+The bosonstar.py file also contains a helper function to evaluate multiple points at the same time in parallel.  
+
+    def scan(phis,cores=1,parallel={"_print":True,"split":True},**kwargs):
+
+Example usage
+
+    kwargs = dict(lam1=1,lam2=1,lam12=1,m1=1e-10,m2=1e-10,fr=1e17)
+    phi2 = 10**(np.linspace(np.log10(1e-4),np.log10(8e-2),30))
+    phi1 = np.zeros_like(phi2)
+    phis = np.column_stack((phi1,phi2))
+    results = scan(phis,cores=30,**kwargs)
+  
+where results is initialized to be 
+
+    results = {"phi1c":[],"phi2c":[],"Cbs":[],"Mbs":[],"M2bs":[],"C2bs":[],"Rc":[],"Rhoc":[]}
+
+and it will have the shape of the input phis which contains the central densities of the scalar fields. 
+
+## Jupyter Notbook: main.ipynb
+
+For examples on calling the functions in bosonstar.py please see the jupyter notebook
