@@ -34,4 +34,23 @@ where
 The relaxation method is started with calling the function
 
     def start(self):
-       
+        ...
+        return self.x, self.y
+
+where 
+- **self.x** = grid given by np.array(xmin,xmax,M)
+- **self.y** = solutions of the differential equations which has shape N x M
+
+Can be called with 
+
+    res = relaxation_method(...,start=False)
+    x,y = res.start
+    dic = res.dic
+or 
+
+    res = relaxation_method(...,start=True)
+    x,y = res.x,res.y
+    dic = res.dic
+
+The iteration counts, error at each iteration, and if the relaxation method was successfull is contained in the dictionary given by res.dic. 
+
