@@ -54,3 +54,45 @@ or
 
 The iteration counts, error at each iteration, and if the relaxation method was successfull is contained in the dictionary given by res.dic. 
 
+To implement the relaxation class, you can implement your own extensions of the relaxation_method class. Examples are given in test1.py and test2.py. 
+
+The extension is given by
+
+    class test(relaxation_method):
+   
+You must define the following function that contains the differential equations with shape N
+
+        def f(self,t,y):
+            #y[0] = y
+            y = y.item(0)
+            f = [y*np.cos(t+y)]
+            return np.array(f)
+            
+You can define the jacobian of the differential equations with shape NxN. If not specified, the algorithm will compute it using finite differences such as in test2.py
+
+        def jac(self,t,y):
+            #y[0] = y
+            y = y.item(0)
+            jac = [[np.cos(t+y) - y*np.sin(t+y)]]
+            return np.array(jac)
+            
+You must specify the jacobian of the derivatives of your boundary conditions with shape n1 x N where n1 is the number of initial boundary conditions. Elements are either 0 or 1 if the boundary condition in that position is specified or not.
+
+        def dB1dy(self):
+            #shape n1 x N
+            dB1dy = np.zeros((self.n1,self.N))
+            dB1dy[0][0] = 1.0
+            #dB1dy[1][1] = 1.0
+            return dB1dy
+
+        def dB2dy(self):
+            #shape n2 x N
+            dB2dy = np.zeros((self.n2,self.N))
+            #dB2dy[0][0] = 1.0
+            return dB2dy
+
+The function scale just specifies the relative scale of each variable in the differential equation.  It can have shape N
+
+        def scale(self,k):  
+            return 0.25
+         
