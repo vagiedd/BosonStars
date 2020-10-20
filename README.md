@@ -28,6 +28,10 @@ where
 - **y_guess** = matrix of initial guesses (or empty) which contains the solution to the differential equations. must have shape N x M
 - **B1** = list of initial conditions
 - **B2** = list of boundary conditions
-- **start** = automatically start relaxation method if True
+- **start** = automatically start relaxation method if True. calls start function
 - **display** = display results of each iteration of the relaxation method
+
+The relaxation method is started with calling the function
+
+    def start(self):
        
