@@ -21,13 +21,13 @@ Implements the relaxation algorithm given in "Numerical Recipies in C: The Art o
                  start=False,display=False,**kwargs):
 
 where 
-    **xmin** = initial x value
-    **xmax** = final x value 
-    **M** = length of x array
-    **N** = number of differential equations
-    **y_guess** = matrix of initial guesses (or empty) which contains the solution to the differential equations. must have shape N x M
-    **B1** = list of initial conditions
-    **B2** = list of boundary conditions
-    **start** = automatically start relaxation method if True
-    **display** = display results of each iteration of the relaxation method
+-**xmin** = initial x value
+-**xmax** = final x value 
+-**M** = length of x array
+-**N** = number of differential equations
+-**y_guess** = matrix of initial guesses (or empty) which contains the solution to the differential equations. must have shape N x M
+-**B1** = list of initial conditions
+-**B2** = list of boundary conditions
+-**start** = automatically start relaxation method if True
+-**display** = display results of each iteration of the relaxation method
        
