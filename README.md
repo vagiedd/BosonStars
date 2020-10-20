@@ -1,5 +1,5 @@
 # BosonStars
-Numerically solve the Einstein-Klein-Gordon equations of motion for two scalar boson stars. 
+Numerically solve the Einstein-Klein-Gordon equations of motion for two scalar boson stars. See arXiv ...
 
 Important files are:
 
@@ -30,6 +30,7 @@ where
 - **B2** = list of boundary conditions
 - **start** = automatically start relaxation method if True. calls start function
 - **display** = display results of each iteration of the relaxation method
+- **slowc** = not specified in initialization call but can be changed by self. change it will impact the rate of convergence. 
 
 The relaxation method is started with calling the function
 
@@ -91,8 +92,25 @@ You must specify the jacobian of the derivatives of your boundary conditions wit
             #dB2dy[0][0] = 1.0
             return dB2dy
 
-The function scale just specifies the relative scale of each variable in the differential equation.  It can have shape N
+The function scale just specifies the relative scale of each variable in the differential equation.  It can have shape N where k returns the position in the list
 
         def scale(self,k):  
             return 0.25
-         
+
+For examples see test1.py and test2.py or the Numerical Recipies book for further explanation of the relaxation method. 
+
+## Boson Star 
+Implements the extension of the relaxation_method to solve the Einstein-Klein-Gordon equations of motions for a system of 2 scalars. It contains the functions necessary for the relaxation method. 
+
+    class bosonstar(relaxation_method):
+        def init(self,lam1=1,lam2=1,lam12=1,m1=1e-10,m2=1e-10,fr=1e17):
+
+where 
+- **lam1** = coupling of first scalar
+- **lam2** = coupling of second scalar
+- **lam12** = interaction between two scalars
+- **m1** = mass of first scalar
+- **m2** = mass of second scalar
+- **fr** = decay scale of scalars. 
+
+If fr is set to None, the couplings are the rescaled quantities.  
