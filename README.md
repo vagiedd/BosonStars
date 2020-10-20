@@ -14,3 +14,7 @@ Optional files are:
 3. test2.py
 
 ## Relaxation Method 
+Implements the relaxation algorithm given in "Numerical Recipies in C: The Art of Scientific Computing". It contains the relaxation_method class and its initialization function is 
+
+  def __init__(self,xmin,xmax,M,N,B1=[],B2=[],y_guess [],iteration=100,start=False,display=False,**kwargs):
+       
