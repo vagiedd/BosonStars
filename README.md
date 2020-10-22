@@ -149,7 +149,7 @@ Just compactness and total mass:
 inputs are x,y and res returned from get_profiles
 
 returns 
-- **Cbs** = compactness in SI units
+- **Cbs** = compactness (dimensionless)
 - **Mbs** = total mass of boson star in solar masses
 
 Just central density and central radius:
