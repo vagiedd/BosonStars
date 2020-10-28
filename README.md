@@ -186,7 +186,7 @@ and it will have the shape of the input phis which contains the central densitie
 
 For examples on calling the functions in bosonstar.py please see the jupyter notebook
 
-# Using the code
+## Using the code
 You can use this code freely, provided that in your publications, you cite
 
 @article{}
