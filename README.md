@@ -13,7 +13,7 @@ Optional files are:
 2. test1.py
 3. test2.py
 
-The code is written and tested in Python 3.
+The code is written and tested in Python 2.7 and 3.
 
 ## Relaxation Method 
 Implements the relaxation algorithm given in "Numerical Recipies in C: The Art of Scientific Computing". It contains the relaxation_method class and its initialization function is 
