@@ -189,13 +189,13 @@ For examples on calling the functions in bosonstar.py please see the jupyter not
 ## Using the code
 You can use this code freely, provided that in your publications, you cite
 
-@article{Guo:2020tla,
-    author = "Guo, Huai-Ke and Sinha, Kuver and Sun, Chen and Swaim, Joshua and Vagie, Daniel",
-    title = "{Two-Scalar Bose-Einstein Condensates: From Stars to Galaxies}",
-    eprint = "2010.15977",
-    archivePrefix = "arXiv",
-    primaryClass = "astro-ph.CO",
-    month = "10",
-    year = "2020"
-}
+    @article{Guo:2020tla,
+        author = "Guo, Huai-Ke and Sinha, Kuver and Sun, Chen and Swaim, Joshua and Vagie, Daniel",
+        title = "{Two-Scalar Bose-Einstein Condensates: From Stars to Galaxies}",
+        eprint = "2010.15977",
+        archivePrefix = "arXiv",
+        primaryClass = "astro-ph.CO",
+        month = "10",
+        year = "2020"
+    }
 
