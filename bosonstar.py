@@ -275,7 +275,8 @@ class bosonstar(relaxation_method):
         #convert to SI
         Mbs = Mbs*1.7827e-27
         R = R*0.19733e-15
-        Cbs = G_N*Mbs/(R*c**2) 
+        #Cbs = G_N*Mbs/(R*c**2) 
+        Cbs = G_N/(R*c**2)*I90/(4.*np.pi*self.G_N*mphi)*1.7827e-27
         rho = (1/(2*B)*(mu1**2*p1**2 + mu2**2*p2**2) + 0.5*(p1**2 + mr**2*p2**2) + 1/(2.*A)*(dp1**2 + dp2**2) + 1/4.*lam1*p1**4 + 1/4.*lam2*p2**4 + 1/4.*lam12*p1**2*p2**2)
         rho = rho/(4*np.pi)
         rho_c = rho[0]
@@ -323,7 +324,8 @@ class bosonstar(relaxation_method):
         #convert to SI
         Mbs = Mbs*1.7827e-27
         R = R*0.19733e-15
-        Cbs = G_N*Mbs/(R*c**2) 
+        #Cbs = G_N*Mbs/(R*c**2) 
+        Cbs = G_N/(R*c**2)*I90/(4.*np.pi*self.G_N*mphi)*1.7827e-27
         return Cbs,Mbs/msun
 
 def check_converge(r,phi,dphi,mu,phi0,tol=1.0e-18):
@@ -429,9 +431,26 @@ def scan(phis,cores=1,parallel={"_print":True,"split":True},**kwargs):
 
 if __name__ == "__main__":
     kwargs = dict(lam1=1,lam2=1,lam12=1,m1=1e-10,m2=1e-10,fr=1e17)
-    x,y,res = get_profiles(0.0,0.01,**kwargs)
-    C,M = get_compactness(x,y,res)
-    rc,rho = get_density(x,y,res)
-    print(res.findMbs(x,y))
+    x,y,res = get_profiles(6e-3,0,**kwargs)
     plt.plot(x,y[1,:],x,y[2,:])
+    plt.show()
+
+    cores = 1
+
+    phi1 = 10**(np.linspace(np.log10(1e-8),np.log10(8e-2),50))
+    phi2 = np.zeros_like(phi1)
+    phis = np.column_stack((phi1,phi2))
+    results = scan(phis,cores=cores,**kwargs)
+    kwinterp = {"kind":"cubic","bounds_error":False,"fill_value":(np.nan,)}
+    C = interpolate.interp1d(results["phi1c"],results["Cbs"],**kwinterp)
+    M = interpolate.interp1d(results["phi1c"],results["Mbs"],**kwinterp)
+    phi = np.linspace(phi1[0],phi1[-1],len(phi2)*100)
+
+    plt.xlabel('$C_{BS}$');plt.ylabel('$M_{BS}$')
+    plt.plot(C(phi),M(phi))
+    #plt.xscale('log')
+    #plt.yscale('log')
+    with open("cvm-0.txt","rb") as f:
+        x,y = np.loadtxt(f).T
+    plt.plot(x,y,color="magenta")
     plt.show()
