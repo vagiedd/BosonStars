@@ -1,5 +1,6 @@
 from relaxation_method import *
 import matplotlib.pyplot as plt
+
 class test(relaxation_method):
     def f(self,t,y):
         #y[0] = y
