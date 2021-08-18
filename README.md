@@ -9,7 +9,7 @@ Important files are:
 
 Optional files are:
 
-1. main.ipynb
+1. main.py
 2. test1.py
 3. test2.py
 
