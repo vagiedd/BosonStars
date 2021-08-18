@@ -182,9 +182,9 @@ where results is initialized to be
 
 and it will have the shape of the input phis which contains the central densities of the scalar fields. 
 
-## Jupyter Notbook: main.ipynb
+## main.py
 
-For examples on calling the functions in bosonstar.py please see the jupyter notebook
+For examples on calling the functions in bosonstar.py please see the main.py file
 
 ## Using the code
 You can use this code freely, provided that in your publications, you cite
