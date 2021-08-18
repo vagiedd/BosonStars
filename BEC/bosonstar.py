@@ -601,7 +601,7 @@ def get_profiles(phi10,phi20,
                  fr=1e17,
                  rstart=10.0,
                  dx=1.0,
-                 tol=10,
+                 tol=1,
                  alpha=1.1,
                  max_grid=1000,
                  min_grid=100,
@@ -640,6 +640,9 @@ def get_profiles(phi10,phi20,
             (r0, rstart) where r0 is a small number approximating zero. 
         dx : float
             Spacing of the grid
+        tol : float
+            Determines the cut off for converging to the ground state.  
+            tol = [1, 10, 100] seem to work the best 
         alpha : float
             Used as a convergance parameter to push rout
         max_grid : float
@@ -682,9 +685,8 @@ def get_profiles(phi10,phi20,
     rout = rstart
     x = np.linspace(1.0e-5,rout,M)
     while True:
-        res = bosonstar(1.0e-5,rout,M,N,lam1=lam1,lam2=lam2,lam12=lam12,m1=m1,m2=m2,fr=fr,B1=[1.0,phi10,phi20,phi*1e-6,phi*1e-6],B2=[phi*1.0e-6,phi*1.0e-6,1.0],y_guess=y,iteration=iteration,start=True,display=display)
-        x = res.x
-        y = res.y
+        BS = bosonstar(1.0e-5,rout,M,N,lam1=lam1,lam2=lam2,lam12=lam12,m1=m1,m2=m2,fr=fr,B1=[1.0,phi10,phi20,phi*1e-6,phi*1e-6],B2=[phi*1.0e-6,phi*1.0e-6,1.0],y_guess=y,iteration=iteration,display=display)
+        x, y = BS.start()
 
         A = y[0,...]
         phi1 = y[1,...]
@@ -722,10 +724,8 @@ def get_profiles(phi10,phi20,
             if r1 < tol and r2 < tol:
                 break
 
-        #print("M = %g"%M)
-
     x,y = interp(x,y,N,len(x)*10)
-    return x,y,res
+    return x,y,BS
 
 def get_compactness(x,y,res):
     """
@@ -743,11 +743,14 @@ def get_density(x,y,res):
 
 def f(phi10,phi20,**kwargs):
     """
-        Helper function to pass to the multiprocessing module. Called by :func: scan below and returns a dictionary 
+        Helper function to pass to the multiprocessing module. 
+        Called by :func: scan below and returns a dictionary.
+        Calls :func: get_profiles and :func: findMbs
     """
     try:
         x,y,res = get_profiles(phi10,phi20,**kwargs)
     except:
+        print("relaxation raised an error")
         return None
     # compute for total star
     C,M,rc,rho = res.findMbs(x,y)

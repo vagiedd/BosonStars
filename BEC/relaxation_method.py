@@ -169,6 +169,10 @@ class relaxation_method():
         -----------
             i, j : int
                 positions in a matrix
+
+        Returns:
+        --------
+        1 or 0
         """
         if(i==j):
             return 1.0
@@ -193,7 +197,6 @@ class relaxation_method():
         scale = 0.25
         return scale
 
-
     def CalcError(self,deltaylist): 
         """
         Computes the value of the average correction by summing the absolute value of all corrections,
@@ -216,7 +219,7 @@ class relaxation_method():
                 errSum = errSum + abs(deltaylist[ip*self.N+ie])/self.scale(ie)
         return errSum/(self.M*self.N)
 
-    def CalcRes(self, x, y):
+    def CalcRes(self,x,y):
         """"
         This function calculates the FDEs of the differential equations
 
@@ -262,7 +265,7 @@ class relaxation_method():
        
         return np.array(reslist,dtype=np.float64)
 
-    def UpdateY(self,y, deltayList):
+    def UpdateY(self,y,deltayList):
         """
         Update the results of the variables after solving the finite difference equations and computing the corrections
 
@@ -281,8 +284,7 @@ class relaxation_method():
             for j in range(self.N): y[j,k]=y[j,k]+deltayList[k*self.N+j]
         return y
 
-
-    def CalcS(self, x, y):
+    def CalcS(self,x,y):
         """
         Computes the derivatives of the residules from :func: CalcE with respect to y
 
@@ -353,9 +355,10 @@ class relaxation_method():
         """
         errList = []
         itList = []
-        x, y = self.x, self.y
+        x = self.x
+        y = self.y
         for it in range(self.iteration):
-            resList = self.CalcRes(x, y)
+            resList=self.CalcRes(x, y)
             s = self.CalcS(x, y)
             with warnings.catch_warnings(): 
                 warnings.simplefilter("ignore")
@@ -365,16 +368,14 @@ class relaxation_method():
             errList.append(err)
             itList.append(it)
             stopIteration = err < self.tol
-            if err > self.tol:
-                deltayList = self.slowc/max([self.slowc,err])*deltayList
-            else:
-                break
+            if not stopIteration: deltayList = self.slowc/max([self.slowc,err])*deltayList
             y = self.UpdateY(y, deltayList)
+            if stopIteration: break
             if it == self.iteration-1:
                 self.successful = False
                 break 
         self.err = errList
         self.iterations = itList
-        self.x, self.y = x, y
         return x, y
+
 
